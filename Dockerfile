@@ -4,8 +4,8 @@ ENV SA_PASSWORD="p_ssW0rd"
 
 COPY ./entrypoint.sh /entrypoint.sh
 
-COPY ./sql-server-sakila-schema.sql /step_1.sql
-COPY ./sql-server-sakila-insert-data.sql /step_2.sql
-COPY ./sql-server-sakila-user.sql /step_3.sql
+COPY ./1-sql-server-sakila-schema.sql /step_1.sql
+COPY ./2-sql-server-sakila-insert-data.sql /step_2.sql
+COPY ./3-sql-server-sakila-user.sql /step_3.sql
 
 CMD /bin/bash /entrypoint.sh

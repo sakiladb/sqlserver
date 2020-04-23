@@ -31,6 +31,9 @@ docker logs will show:
 sakiladb/sqlserver has successfully initialized.
 ```
 
+Note that even after this message is logged, it may take another few moments for
+it to become available (due to a final server restart etc).
+
 If you have [sqlcmd](https://docs.microsoft.com/en-us/sql/tools/sqlcmd-utility) installed
 locally, verify that all is well:
 
