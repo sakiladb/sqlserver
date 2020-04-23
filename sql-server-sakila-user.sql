@@ -16,5 +16,5 @@ GO
 ALTER ROLE [db_owner] ADD MEMBER [sakila]
 GO
 
-SELECT 'sakiladb/sqlserver has successfully initialized.'
+SELECT 'sakiladb/sqlserver has successfully initialized.' AS sakiladb_completion_message
 GO

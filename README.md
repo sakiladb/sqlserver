@@ -2,7 +2,8 @@
 
 Microsoft [SQL Server](https://hub.docker.com/_/microsoft-mssql-server) docker
 image preloaded with the [Sakila](https://dev.mysql.com/doc/sakila/en/) example
-database (by way of [jooq](https://www.jooq.org/sakila)). See on
+database (by way of [jooq](https://www.jooq.org/sakila)).
+See on
 [Docker Hub](https://hub.docker.com/r/sakiladb/sqlserver).
 
 By default these are created:
