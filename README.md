@@ -12,18 +12,23 @@ By default these are created:
 
 
 ```shell script
-docker run -p 5432:5432 -d sakiladb/sqlserver:latest
+docker run -p 1433:1433 -d sakiladb/sqlserver:latest
 ```
 
-Or use a specific version of SQL Server (see all available image tags
-on [Docker Hub](https://hub.docker.com/r/sakiladb/sqlserver/tags).)
+Or use a specific version of SQL Server: see all available image tags
+on [Docker Hub](https://hub.docker.com/r/sakiladb/sqlserver/tags). For example:
 
 ```shell script
-docker run -p 5432:5432 -d sakiladb/sqlserver:2017-CU19
+docker run -p 1433:1433 -d sakiladb/sqlserver:2017
 ```
 
 
-Note that it may take some time for the container to boot up.
+Note that it may take some time for the container to boot up. Eventually the container's
+docker logs will show:
+
+```
+sakiladb/sqlserver has successfully initialized.
+```
 
 If you have [sqlcmd](https://docs.microsoft.com/en-us/sql/tools/sqlcmd-utility) installed
 locally, verify that all is well:

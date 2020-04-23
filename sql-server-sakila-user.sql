@@ -15,3 +15,6 @@ ALTER USER [sakila] WITH DEFAULT_SCHEMA=[dbo]
 GO
 ALTER ROLE [db_owner] ADD MEMBER [sakila]
 GO
+
+SELECT 'sakiladb/sqlserver has successfully initialized.'
+GO
