@@ -1,9 +1,7 @@
-#!/bin/bash
+# We start the restore script as a background process (it will
+# wait until the server is available).
+./restore-from-bak.sh &
 
-# cat all the files together to make our logic simpler
-cat /step_1.sql /step_2.sql /step_3.sql > /db_init.sql
-
-# Run init-script with long timeout - and make it run in the background
-/opt/mssql-tools/bin/sqlcmd -S localhost -l 60 -U sa -P p_ssW0rd -i /db_init.sql &
-# Start SQL server
+# This is the main process
+echo "Starting database..."
 /opt/mssql/bin/sqlservr

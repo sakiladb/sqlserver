@@ -6,10 +6,13 @@ database (by way of [jooq](https://www.jooq.org/sakila)).
 See on
 [Docker Hub](https://hub.docker.com/r/sakiladb/sqlserver).
 
-By default these are created:
+By default, these are created:
 - database: `sakila`
 - username / password: `sakila` / `p_ssW0rd`
 
+This SQL Server database should behave largely like the Sakila
+[Azure SQL Edge](https://github.com/sakiladb/azure-sql-edge) image. However,
+Azure SQL Edge will run on both `amd64` and `arm64`, while SQL Server only runs on `amd64`.
 
 
 ```shell script
