@@ -4,7 +4,6 @@ ENV SA_PASSWORD="p_ssW0rd"
 ENV MSSQL_SA_PASSWORD="p_ssW0rd"
 ENV MSSQL_PID="Developer"
 
-USER root
 
 RUN mkdir -p /sakila
 WORKDIR /sakila
@@ -19,7 +18,6 @@ RUN add-apt-repository "$(wget -qO- https://packages.microsoft.com/config/ubuntu
 RUN apt-get update -y
 RUN apt-get install -y sqlcmd
 
-USER mssql
 
 EXPOSE 1433
 
