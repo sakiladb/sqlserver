@@ -19,9 +19,10 @@
 # republish the docker images as needed.
 
 set -e
+set -x
 
 export SQLCMDPASSWORD="p_ssW0rd"
-container_version="2017-CU19-ubuntu-16.04"
+container_version="2017-CU31-ubuntu-18.04"
 container_name="sqlserver-$(echo $RANDOM | md5sum | head -c 8)"
 
 docker run -d --cap-add SYS_PTRACE -v $(pwd):/sakila \
@@ -35,6 +36,7 @@ sleep 5 # give the container a chance to start
 
 cat ./1-sql-server-sakila-schema.sql ./2-sql-server-sakila-insert-data.sql ./3-sql-server-sakila-user.sql > ./init-db-full.sql
 
+set +x
 set +e
 
 for i in {1..50};
