@@ -21,12 +21,12 @@
 set -e
 
 export SQLCMDPASSWORD="p_ssW0rd"
-container_version="1.0.6"
-container_name="azure-sql-edge-$(echo $RANDOM | md5sum | head -c 8)"
+container_version="2017-CU19-ubuntu-16.04"
+container_name="sqlserver-$(echo $RANDOM | md5sum | head -c 8)"
 
 docker run -d --cap-add SYS_PTRACE -v $(pwd):/sakila \
-  -e 'ACCEPT_EULA=1' -e MSSQL_SA_PASSWORD="$SQLCMDPASSWORD" -e 'MSSQL_PID=Developer' \
-  -p 1433:1433 --name "$container_name" mcr.microsoft.com/azure-sql-edge:1.0.6
+  -e 'ACCEPT_EULA=1' -e SA_PASSWORD="$SQLCMDPASSWORD" -e 'MSSQL_PID=Developer' \
+  -p 1433:1433 --name "$container_name" mcr.microsoft.com/mssql/server:$container_version
 
 printf "\n\nBuilding Sakila DB via SQL scripts....\n\n"
 printf "This could take several minutes, and you may see errors that are to be ignored.\n\n";
