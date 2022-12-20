@@ -11,13 +11,7 @@ COPY . /sakila
 RUN chmod -R 777 /sakila
 
 # Install sqlcmd, because it's not pre-installed.
-RUN apt update -y
-RUN apt install -y sudo curl git gnupg2 software-properties-common
-RUN curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
-RUN add-apt-repository "$(wget -qO- https://packages.microsoft.com/config/ubuntu/18.04/prod.list)"
-RUN apt-get update -y
-RUN apt-get install -y sqlcmd
-
+RUN ./install-sqlcmd.sh
 
 EXPOSE 1433
 
