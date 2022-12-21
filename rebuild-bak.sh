@@ -30,7 +30,7 @@ docker run -d \
   -e 'ACCEPT_EULA=1' \
   -e 'MSSQL_PID=Developer' \
   -e SA_PASSWORD="$SQLCMDPASSWORD" \
-  -p 1433:1433
+  -p 1433:1433 \
   --name "$container_name" mcr.microsoft.com/mssql/server:$container_version
 
 docker exec -it -u0 "$container_name" /sakila/install-sqlcmd.sh
