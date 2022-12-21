@@ -8,9 +8,9 @@
 #
 # The process is:
 #
-# - Concat the relevant SQL scripts together into ./init-db-full.sql
 # - Start a new sqlserver container
-# - Use sqlcmd to run that script against the DB
+# - Install sqlcmd in the container (install-sqlcmd.sh)
+# - Execute "
 # - Then use sqlcmd to generate "sakila.bak" (in the container)
 # - Copy "sakila.bak" from container to local filesystem
 # - Kill the container.
@@ -19,7 +19,6 @@
 # republish the docker images as needed.
 
 set -e
-set -x
 
 export SQLCMDPASSWORD="p_ssW0rd"
 container_version="2017-CU31-ubuntu-18.04"
@@ -27,6 +26,7 @@ container_name="sqlserver-$(echo $RANDOM | md5sum | head -c 8)"
 
 docker run -d \
   -v $(pwd):/sakila \
+  -w /sakila
   -e 'ACCEPT_EULA=1' \
   -e 'MSSQL_PID=Developer' \
   -e SA_PASSWORD="$SQLCMDPASSWORD" \
@@ -34,16 +34,9 @@ docker run -d \
   --name "$container_name" mcr.microsoft.com/mssql/server:$container_version
 
 docker exec -it -u0 "$container_name" /sakila/install-sqlcmd.sh
-docker exec -it "$container_name" /sakila/create-db-and-bak-from-sql-scripts.sh
-
-
-printf "\n\nBuilding backup in container...\n"
-
-#sqlcmd -S localhost -U sa -Q "BACKUP DATABASE [sakila] TO DISK = N'/sakila/sakila.bak' WITH NOFORMAT, NOINIT, NAME = 'sakila', SKIP, NOREWIND, NOUNLOAD, STATS = 10"
-sqlcmd -S localhost -U sa -Q "BACKUP DATABASE [sakila] TO DISK = N'/sakila/sakila.bak' WITH FORMAT;"
+docker exec -it -u0 "$container_name" /sakila/init-db.sh # Also creates sakila.bak in the container
 
 printf "\nCopying backup from container to local filesystem: %s\n\n" $(pwd)/sakila.bak
-
 docker cp "$container_name":/sakila/sakila.bak ./sakila.bak
 
 echo "Stopping container: $container_name"
