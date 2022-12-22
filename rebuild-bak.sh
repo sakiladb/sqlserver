@@ -26,7 +26,7 @@ container_name="sqlserver-$(echo $RANDOM | md5sum | head -c 8)"
 
 docker run -d \
   -v $(pwd):/sakila \
-  -w /sakila
+  -w /sakila \
   -e 'ACCEPT_EULA=1' \
   -e 'MSSQL_PID=Developer' \
   -e SA_PASSWORD="$SQLCMDPASSWORD" \
