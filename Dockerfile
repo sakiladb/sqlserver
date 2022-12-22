@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/mssql/server:2017-CU31-ubuntu-18.04 AS sakila-base
+FROM mcr.microsoft.com/mssql/server:2019-CU18-ubuntu-20.04 AS sakila-base
 ENV ACCEPT_EULA="Y"
 ENV SA_PASSWORD="p_ssW0rd"
 ENV MSSQL_SA_PASSWORD="p_ssW0rd"

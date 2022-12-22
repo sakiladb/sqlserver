@@ -21,7 +21,7 @@
 set -e
 
 export SQLCMDPASSWORD="p_ssW0rd"
-container_version="2017-CU31-ubuntu-18.04"
+container_version="2019-CU18-ubuntu-20.04"
 container_name="sqlserver-$(echo $RANDOM | md5sum | head -c 8)"
 
 docker run -d \
