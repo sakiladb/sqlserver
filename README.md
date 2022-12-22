@@ -26,7 +26,6 @@ on [Docker Hub](https://hub.docker.com/r/sakiladb/sqlserver/tags). For example:
 docker run -p 1433:1433 -d sakiladb/sqlserver:2017
 ```
 
-
 Note that it may take some time for the container to boot up. Eventually the container's
 docker logs will show:
 
