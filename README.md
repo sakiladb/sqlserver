@@ -41,7 +41,8 @@ If you have [sqlcmd](https://docs.microsoft.com/en-us/sql/tools/sqlcmd-utility) 
 locally, verify that all is well:
 
 ```shell script
-$ sqlcmd -S localhost -U sakila -P p_ssW0rd -d sakila -Q 'select * from actor'
+$ export SQLCMDPASSWORD='p_ssW0rd'
+$ sqlcmd -S localhost -U sakila  -d sakila -Q 'select * from actor'
  actor_id | first_name |  last_name   |     last_update
 ----------+------------+--------------+---------------------
         1 | PENELOPE   | GUINESS      | 2006-02-15 04:34:33
