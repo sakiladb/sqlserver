@@ -35,17 +35,7 @@ jobs:
       - name: Install cosign
         if: ${{ startsWith(github.ref, 'refs/tags/v') && github.event_name != 'pull_request' }}
         uses: sigstore/cosign-installer@v2.8.1
-      - name: Check cosign install
-        if: ${{ startsWith(github.ref, 'refs/tags/v') && github.event_name != 'pull_request' }}
-        run: cosign version
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-
-      - name: Setup Docker buildx
-        uses: docker/setup-buildx-action@v2
-        with:
-          platforms: linux/amd64,linux/arm64
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
@@ -77,7 +67,7 @@ jobs:
           push: ${{ startsWith(github.ref, 'refs/tags/v') && github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
