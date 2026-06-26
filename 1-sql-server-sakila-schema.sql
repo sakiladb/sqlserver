@@ -1,6 +1,6 @@
 /*
 
-Sakila for Microsoft SQL Server is a port of the Sakila example database available for MySQL, which was originally developed by Mike Hillyer of the MySQL AB documentation team. 
+Sakila for Microsoft SQL Server is a port of the Sakila example database available for MySQL, which was originally developed by Mike Hillyer of the MySQL AB documentation team.
 This project is designed to help database administrators to decide which database to use for development of new products
 The user can run the same SQL against different kind of databases and compare the performance
 
@@ -28,7 +28,7 @@ CREATE TABLE actor (
 GO
  ALTER TABLE actor ADD CONSTRAINT [DF_actor_last_update] DEFAULT (getdate()) FOR last_update
 GO
- CREATE  INDEX idx_actor_last_name ON actor(last_name) 
+ CREATE  INDEX idx_actor_last_name ON actor(last_name)
 GO
 
 --
@@ -61,7 +61,7 @@ CREATE TABLE city (
 GO
  ALTER TABLE city ADD CONSTRAINT [DF_city_last_update] DEFAULT (getdate()) FOR last_update
 GO
- CREATE  INDEX idx_fk_country_id ON city(country_id) 
+ CREATE  INDEX idx_fk_country_id ON city(country_id)
 GO
 
 --
@@ -82,7 +82,7 @@ CREATE TABLE address (
 GO
 ALTER TABLE address ADD CONSTRAINT [DF_address_last_update] DEFAULT (getdate()) FOR last_update
 GO
-CREATE  INDEX idx_fk_city_id ON address(city_id) 
+CREATE  INDEX idx_fk_city_id ON address(city_id)
 GO
 ALTER TABLE address ADD  CONSTRAINT fk_address_city FOREIGN KEY (city_id) REFERENCES city (city_id) ON DELETE NO ACTION ON UPDATE CASCADE
 GO
@@ -126,7 +126,7 @@ CREATE TABLE customer (
   last_name VARCHAR(45) NOT NULL,
   email VARCHAR(50) DEFAULT NULL,
   address_id INT NOT NULL,
-  active CHAR(1) NOT NULL DEFAULT 'Y',
+  active BIT NOT NULL DEFAULT 1,
   create_date DATETIME NOT NULL,
   last_update DATETIME NOT NULL,
   PRIMARY KEY NONCLUSTERED (customer_id),
@@ -137,11 +137,11 @@ GO
 GO
  ALTER TABLE customer ADD CONSTRAINT [DF_customer_create_date] DEFAULT (getdate()) FOR create_date
 GO
- CREATE  INDEX idx_fk_store_id ON customer(store_id) 
+ CREATE  INDEX idx_fk_store_id ON customer(store_id)
 GO
- CREATE  INDEX idx_fk_address_id ON customer(address_id) 
+ CREATE  INDEX idx_fk_address_id ON customer(address_id)
 GO
- CREATE  INDEX idx_last_name ON customer(last_name) 
+ CREATE  INDEX idx_last_name ON customer(last_name)
 GO
 
 --
@@ -164,22 +164,22 @@ CREATE TABLE film (
   last_update DATETIME NOT NULL,
   PRIMARY KEY NONCLUSTERED (film_id),
   CONSTRAINT fk_film_language FOREIGN KEY (language_id) REFERENCES language (language_id) ,
-  CONSTRAINT fk_film_language_original FOREIGN KEY (original_language_id) REFERENCES language (language_id) 
+  CONSTRAINT fk_film_language_original FOREIGN KEY (original_language_id) REFERENCES language (language_id)
 )
 GO
-ALTER TABLE film ADD CONSTRAINT CHECK_special_features CHECK(special_features is null or 
-                                                              special_features like '%Trailers%' or 
-                                                              special_features like '%Commentaries%' or 
-                                                              special_features like '%Deleted Scenes%' or 
+ALTER TABLE film ADD CONSTRAINT CHECK_special_features CHECK(special_features is null or
+                                                              special_features like '%Trailers%' or
+                                                              special_features like '%Commentaries%' or
+                                                              special_features like '%Deleted Scenes%' or
                                                               special_features like '%Behind the Scenes%')
 GO
 ALTER TABLE film ADD CONSTRAINT CHECK_special_rating CHECK(rating in ('G','PG','PG-13','R','NC-17'))
 GO
 ALTER TABLE film ADD CONSTRAINT [DF_film_last_update] DEFAULT (getdate()) FOR last_update
 GO
-CREATE  INDEX idx_fk_language_id ON film(language_id) 
+CREATE  INDEX idx_fk_language_id ON film(language_id)
 GO
-CREATE  INDEX idx_fk_original_language_id ON film(original_language_id) 
+CREATE  INDEX idx_fk_original_language_id ON film(original_language_id)
 GO
 
 
@@ -198,9 +198,9 @@ CREATE TABLE film_actor (
 GO
  ALTER TABLE film_actor ADD CONSTRAINT [DF_film_actor_last_update] DEFAULT (getdate()) FOR last_update
 GO
- CREATE  INDEX idx_fk_film_actor_film ON film_actor(film_id) 
+ CREATE  INDEX idx_fk_film_actor_film ON film_actor(film_id)
 GO
- CREATE  INDEX idx_fk_film_actor_actor ON film_actor(actor_id) 
+ CREATE  INDEX idx_fk_film_actor_actor ON film_actor(actor_id)
 GO
 
 --
@@ -218,20 +218,24 @@ CREATE TABLE film_category (
 GO
  ALTER TABLE film_category ADD CONSTRAINT [DF_film_category_last_update] DEFAULT (getdate()) FOR last_update
 GO
- CREATE  INDEX idx_fk_film_category_film ON film_category(film_id) 
+ CREATE  INDEX idx_fk_film_category_film ON film_category(film_id)
 GO
- CREATE  INDEX idx_fk_film_category_category ON film_category(category_id) 
+ CREATE  INDEX idx_fk_film_category_category ON film_category(category_id)
 GO
 --
 -- Table structure for table film_text
 --
+-- film_id widened to INT (matches film.film_id) and description to VARCHAR(MAX)
+-- (TEXT is deprecated and warns under full-text change tracking). Populated and
+-- given a full-text index at build time (4-sql-server-sakila-fulltext.sql).
 
 CREATE TABLE film_text (
-  film_id SMALLINT NOT NULL,
+  film_id INT NOT NULL,
   title VARCHAR(255) NOT NULL,
-  description TEXT,
-  PRIMARY KEY NONCLUSTERED (film_id),
+  description VARCHAR(MAX),
+  CONSTRAINT PK_film_text PRIMARY KEY NONCLUSTERED (film_id)
 )
+GO
 
 --
 -- Table structure for table inventory
@@ -248,9 +252,9 @@ CREATE TABLE inventory (
 GO
  ALTER TABLE inventory ADD CONSTRAINT [DF_inventory_last_update] DEFAULT (getdate()) FOR last_update
 GO
- CREATE  INDEX idx_fk_film_id ON inventory(film_id) 
+ CREATE  INDEX idx_fk_film_id ON inventory(film_id)
 GO
- CREATE  INDEX idx_fk_film_id_store_id ON inventory(store_id,film_id) 
+ CREATE  INDEX idx_fk_film_id_store_id ON inventory(store_id,film_id)
 GO
 
 --
@@ -275,9 +279,9 @@ CREATE TABLE staff (
 GO
  ALTER TABLE staff ADD CONSTRAINT [DF_staff_last_update] DEFAULT (getdate()) FOR last_update
 GO
- CREATE  INDEX idx_fk_store_id ON staff(store_id) 
+ CREATE  INDEX idx_fk_store_id ON staff(store_id)
 GO
- CREATE  INDEX idx_fk_address_id ON staff(address_id) 
+ CREATE  INDEX idx_fk_address_id ON staff(address_id)
 GO
 
 --
@@ -291,15 +295,15 @@ CREATE TABLE store (
   last_update DATETIME NOT NULL,
   PRIMARY KEY NONCLUSTERED (store_id),
   CONSTRAINT fk_store_staff FOREIGN KEY (manager_staff_id) REFERENCES staff (staff_id) ,
-  CONSTRAINT fk_store_address FOREIGN KEY (address_id) REFERENCES address (address_id) 
+  CONSTRAINT fk_store_address FOREIGN KEY (address_id) REFERENCES address (address_id)
 )
 
 GO
  ALTER TABLE store ADD CONSTRAINT [DF_store_last_update] DEFAULT (getdate()) FOR last_update
 GO
- CREATE UNIQUE NONCLUSTERED INDEX idx_fk_address_id ON store(manager_staff_id) 
+ CREATE UNIQUE NONCLUSTERED INDEX idx_fk_address_id ON store(manager_staff_id)
 GO
- CREATE  INDEX idx_fk_store_address ON store(address_id) 
+ CREATE  INDEX idx_fk_store_address ON store(address_id)
 GO
 
 
@@ -317,14 +321,14 @@ CREATE TABLE payment (
   last_update DATETIME NOT NULL,
   PRIMARY KEY NONCLUSTERED (payment_id),
   CONSTRAINT fk_payment_customer FOREIGN KEY (customer_id) REFERENCES customer (customer_id) ,
-  CONSTRAINT fk_payment_staff FOREIGN KEY (staff_id) REFERENCES staff (staff_id) 
+  CONSTRAINT fk_payment_staff FOREIGN KEY (staff_id) REFERENCES staff (staff_id)
 )
 GO
  ALTER TABLE payment ADD CONSTRAINT [DF_payment_last_update] DEFAULT (getdate()) FOR last_update
 GO
- CREATE  INDEX idx_fk_staff_id ON payment(staff_id) 
+ CREATE  INDEX idx_fk_staff_id ON payment(staff_id)
 GO
- CREATE  INDEX idx_fk_customer_id ON payment(customer_id) 
+ CREATE  INDEX idx_fk_customer_id ON payment(customer_id)
 GO
 
 --
@@ -342,16 +346,16 @@ CREATE TABLE rental (
   PRIMARY KEY NONCLUSTERED (rental_id),
   CONSTRAINT fk_rental_staff FOREIGN KEY (staff_id) REFERENCES staff (staff_id) ,
   CONSTRAINT fk_rental_inventory FOREIGN KEY (inventory_id) REFERENCES inventory (inventory_id) ,
-  CONSTRAINT fk_rental_customer FOREIGN KEY (customer_id) REFERENCES customer (customer_id) 
+  CONSTRAINT fk_rental_customer FOREIGN KEY (customer_id) REFERENCES customer (customer_id)
 )
 GO
  ALTER TABLE rental ADD CONSTRAINT [DF_rental_last_update] DEFAULT (getdate()) FOR last_update
 GO
- CREATE INDEX idx_fk_inventory_id ON rental(inventory_id) 
+ CREATE INDEX idx_fk_inventory_id ON rental(inventory_id)
 GO
- CREATE INDEX idx_fk_customer_id ON rental(customer_id) 
+ CREATE INDEX idx_fk_customer_id ON rental(customer_id)
 GO
- CREATE INDEX idx_fk_staff_id ON rental(staff_id) 
+ CREATE INDEX idx_fk_staff_id ON rental(staff_id)
 GO
  CREATE UNIQUE INDEX   idx_uq  ON rental (rental_date,inventory_id,customer_id)
 GO
@@ -372,35 +376,65 @@ GO
 
 CREATE VIEW customer_list
 AS
-SELECT cu.customer_id AS ID, 
-       cu.first_name + ' ' + cu.last_name AS name, 
-       a.address AS address, 
-       a.postal_code AS zip_code,
-	   a.phone AS phone, 
-	   city.city AS city, 
-	   country.country AS country, 
-	   case when cu.active=1 then 'active' else '' end AS notes, 
-	   cu.store_id AS SID
+SELECT cu.customer_id AS ID,
+       cu.first_name + ' ' + cu.last_name AS name,
+       a.address AS address,
+       a.postal_code AS [zip code],
+       a.phone AS phone,
+       city.city AS city,
+       country.country AS country,
+       case when cu.active=1 then 'active' else '' end AS notes,
+       cu.store_id AS SID
 FROM customer AS cu JOIN address AS a ON cu.address_id = a.address_id JOIN city ON a.city_id = city.city_id
-	JOIN country ON city.country_id = country.country_id
+     JOIN country ON city.country_id = country.country_id
 GO
 --
 -- View structure for view film_list
 --
+-- Aggregates the cast into a single `actors` column (one row per film), matching
+-- the other sakiladb variants. STRING_AGG ordering makes the output
+-- deterministic and byte-identical across the family; the EXISTS filter excludes
+-- the 3 films with no actors (997 rows), as in the postgres/mysql views.
 
 CREATE VIEW film_list
 AS
-SELECT film.film_id AS FID, 
-       film.title AS title, 
-       film.description AS description, 
-       category.name AS category, 
-       film.rental_rate AS price,
-	   film.length AS length, 
-	   film.rating AS rating, 
-	   actor.first_name+' '+actor.last_name AS actors
-FROM category LEFT JOIN film_category ON category.category_id = film_category.category_id LEFT JOIN film ON film_category.film_id = film.film_id
-        JOIN film_actor ON film.film_id = film_actor.film_id
-	JOIN actor ON film_actor.actor_id = actor.actor_id
+SELECT f.film_id AS FID,
+       f.title AS title,
+       f.description AS description,
+       c.name AS category,
+       f.rental_rate AS price,
+       f.length AS length,
+       f.rating AS rating,
+       (SELECT STRING_AGG(CAST(a.first_name + ' ' + a.last_name AS VARCHAR(MAX)), ', ')
+               WITHIN GROUP (ORDER BY a.first_name, a.last_name, a.actor_id)
+        FROM film_actor fa JOIN actor a ON fa.actor_id = a.actor_id
+        WHERE fa.film_id = f.film_id) AS actors
+FROM film f JOIN film_category fc ON f.film_id = fc.film_id JOIN category c ON fc.category_id = c.category_id
+WHERE EXISTS (SELECT 1 FROM film_actor fa WHERE fa.film_id = f.film_id)
+GO
+
+--
+-- View structure for view nicer_but_slower_film_list
+--
+-- Same as film_list, but with the cast title-cased ("Penelope Guiness").
+
+CREATE VIEW nicer_but_slower_film_list
+AS
+SELECT f.film_id AS FID,
+       f.title AS title,
+       f.description AS description,
+       c.name AS category,
+       f.rental_rate AS price,
+       f.length AS length,
+       f.rating AS rating,
+       (SELECT STRING_AGG(CAST(
+                 UPPER(SUBSTRING(a.first_name,1,1)) + LOWER(SUBSTRING(a.first_name,2,LEN(a.first_name))) + ' ' +
+                 UPPER(SUBSTRING(a.last_name,1,1)) + LOWER(SUBSTRING(a.last_name,2,LEN(a.last_name))) AS VARCHAR(MAX)), ', ')
+               WITHIN GROUP (ORDER BY a.first_name, a.last_name, a.actor_id)
+        FROM film_actor fa JOIN actor a ON fa.actor_id = a.actor_id
+        WHERE fa.film_id = f.film_id) AS actors
+FROM film f JOIN film_category fc ON f.film_id = fc.film_id JOIN category c ON fc.category_id = c.category_id
+WHERE EXISTS (SELECT 1 FROM film_actor fa WHERE fa.film_id = f.film_id)
 GO
 
 --
@@ -409,16 +443,16 @@ GO
 
 CREATE VIEW staff_list
 AS
-SELECT s.staff_id AS ID, 
-       s.first_name+' '+s.last_name AS name, 
-       a.address AS address, 
-       a.postal_code AS zip_code, 
+SELECT s.staff_id AS ID,
+       s.first_name + ' ' + s.last_name AS name,
+       a.address AS address,
+       a.postal_code AS [zip code],
        a.phone AS phone,
-	   city.city AS city, 
-	   country.country AS country, 
-	   s.store_id AS SID
+       city.city AS city,
+       country.country AS country,
+       s.store_id AS SID
 FROM staff AS s JOIN address AS a ON s.address_id = a.address_id JOIN city ON a.city_id = city.city_id
-	JOIN country ON city.country_id = country.country_id
+     JOIN country ON city.country_id = country.country_id
 GO
 --
 -- View structure for view sales_by_store
@@ -439,9 +473,9 @@ INNER JOIN address AS a ON s.address_id = a.address_id
 INNER JOIN city AS c ON a.city_id = c.city_id
 INNER JOIN country AS cy ON c.country_id = cy.country_id
 INNER JOIN staff AS m ON s.manager_staff_id = m.staff_id
-GROUP BY   
+GROUP BY
   s.store_id
-, c.city+ ','+cy.country 
+, c.city+ ','+cy.country
 , m.first_name+' '+ m.last_name
 GO
 --
@@ -468,38 +502,29 @@ GO
 --
 -- View structure for view actor_info
 --
+-- Per-actor film list grouped by category. SQL Server STRING_AGG has no DISTINCT
+-- and the view is doubly-correlated (films per category per actor), so it uses
+-- OUTER APPLY (per actor) over a derived table (per category) whose inner scalar
+-- subquery aggregates titles. Films ordered by title, categories by name —
+-- byte-identical to the postgres/mysql actor_info output.
 
-/*
 CREATE VIEW actor_info
 AS
-SELECT
-a.actor_id,
-a.first_name,
-a.last_name,
-GROUP_CONCAT(DISTINCT CONCAT(c.name, ': ',
-		(SELECT GROUP_CONCAT(f.title ORDER BY f.title SEPARATOR ', ')
-                    FROM sakila.film f
-                    INNER JOIN sakila.film_category fc
-                      ON f.film_id = fc.film_id
-                    INNER JOIN sakila.film_actor fa
-                      ON f.film_id = fa.film_id
-                    WHERE fc.category_id = c.category_id
-                    AND fa.actor_id = a.actor_id
-                 )
-             )
-             ORDER BY c.name SEPARATOR '; ')
-AS film_info
-FROM sakila.actor a
-LEFT JOIN sakila.film_actor fa
-  ON a.actor_id = fa.actor_id
-LEFT JOIN sakila.film_category fc
-  ON fa.film_id = fc.film_id
-LEFT JOIN sakila.category c
-  ON fc.category_id = c.category_id
-GROUP BY a.actor_id, a.first_name, a.last_name;
-*/
+SELECT a.actor_id, a.first_name, a.last_name, ca.film_info
+FROM actor a
+OUTER APPLY (
+  SELECT STRING_AGG(CAST(x.name + ': ' + x.films AS VARCHAR(MAX)), '; ') WITHIN GROUP (ORDER BY x.name) AS film_info
+  FROM (
+     SELECT c.name,
+            (SELECT STRING_AGG(CAST(f.title AS VARCHAR(MAX)), ', ') WITHIN GROUP (ORDER BY f.title)
+             FROM film f JOIN film_category fc2 ON f.film_id = fc2.film_id JOIN film_actor fa2 ON f.film_id = fa2.film_id
+             WHERE fc2.category_id = c.category_id AND fa2.actor_id = a.actor_id) AS films
+     FROM category c
+     WHERE EXISTS (SELECT 1 FROM film_category fc JOIN film_actor fa ON fc.film_id = fa.film_id
+                   WHERE fc.category_id = c.category_id AND fa.actor_id = a.actor_id)
+  ) x
+) ca
+GO
 
--- TO DO PROCEDURES
--- TO DO TRIGGERS
-
-
+-- Stored procedures and triggers are intentionally omitted (faithful to jOOQ's
+-- SQL Server port, which never implemented them; they are sq-invisible).
