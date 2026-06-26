@@ -112,7 +112,7 @@ Server version — the version is derived from the tag, so there are no per-vers
 
 ### 2026-06-26
 
-- **Restored faithful original data** (`v2019.0.4`, `v2022.0.1`) — the Sakila data is now byte-identical
+- **Restored faithful original data** (`v2019.0.4`, `v2022.0.1`). The Sakila data is now byte-identical
   to the original MySQL Sakila: restored the Unicode accents stripped from international place names
   (e.g. `Réunion`, `Coruña`), the real `address.phone` numbers, and the full `address.district` column.
 - **Modernized as a consistent sakiladb fixture.** Reconciled the schema to the canonical
