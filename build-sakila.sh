@@ -30,7 +30,10 @@ echo "Loading schema + data + full-text..."
 cat /sql/1-sql-server-sakila-schema.sql \
     /sql/2-sql-server-sakila-insert-data.sql \
     /sql/4-sql-server-sakila-fulltext.sql > /tmp/init-db-full.sql
-"${SQLCMD[@]}" -i /tmp/init-db-full.sql
+# -f 65001 = read the input as UTF-8. The data file now carries real Unicode
+# (restored international names like Réunion, Coruña); without this sqlcmd would
+# read the UTF-8 bytes as the default codepage and mangle the accents.
+"${SQLCMD[@]}" -f 65001 -i /tmp/init-db-full.sql
 
 # Safety net: assert the data actually loaded into sakila before backing up.
 rows="$("${SQLCMD[@]}" -d sakila -h -1 -W -Q "SET NOCOUNT ON; SELECT COUNT(*) FROM film_text" | tr -d '[:space:]')"
