@@ -86,8 +86,8 @@ Each SQL Server version is published as its own image tag. `latest` tracks the n
 
 | SQL Server | sakiladb Release | Architecture | Docker Hub                           | GitHub Container Registry                    |
 |-----------:|------------------|--------------|--------------------------------------|----------------------------------------------|
-|       2022 | `v2022.0.0`      | `amd64`      | `sakiladb/sqlserver:2022`, `:latest` | `ghcr.io/sakiladb/sqlserver:2022`, `:latest` |
-|       2019 | `v2019.0.3`      | `amd64`      | `sakiladb/sqlserver:2019`            | `ghcr.io/sakiladb/sqlserver:2019`            |
+|       2022 | `v2022.0.1`      | `amd64`      | `sakiladb/sqlserver:2022`, `:latest` | `ghcr.io/sakiladb/sqlserver:2022`, `:latest` |
+|       2019 | `v2019.0.4`      | `amd64`      | `sakiladb/sqlserver:2019`            | `ghcr.io/sakiladb/sqlserver:2019`            |
 
 **sakiladb Release** is the git tag the current image was built from (see
 [releases](https://github.com/sakiladb/sqlserver/releases)). Its version is `v{YEAR}.{MINOR}.{PATCH}`:
@@ -112,6 +112,9 @@ Server version — the version is derived from the tag, so there are no per-vers
 
 ### 2026-06-26
 
+- **Restored faithful original data** (`v2019.0.4`, `v2022.0.1`) — the Sakila data is now byte-identical
+  to the original MySQL Sakila: restored the Unicode accents stripped from international place names
+  (e.g. `Réunion`, `Coruña`), the real `address.phone` numbers, and the full `address.district` column.
 - **Modernized as a consistent sakiladb fixture.** Reconciled the schema to the canonical
   [`sakiladb/mysql`](https://hub.docker.com/r/sakiladb/mysql): `film_list` now aggregates the cast (was
   one row per film-actor); added `actor_info` and `nicer_but_slower_film_list` (**16 tables + 7 views**);
