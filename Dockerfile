@@ -1,3 +1,8 @@
+# check=skip=SecretsUsedInArgOrEnv
+# ^ The *_PASSWORD values below are the public, documented Sakila fixture
+#   credential (p_ssW0rd) — these are throwaway test-fixture images with a
+#   fixed, published password, not a secret. This lint rule is skipped.
+
 # SQL Server version to build.
 #
 # MSSQL_VERSION is the base-image tag (e.g. 2019-latest, 2022-latest);
