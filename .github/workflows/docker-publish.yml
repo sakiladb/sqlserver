@@ -48,7 +48,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       # Determine which SQL Server year to build:
       #   - tag push (v2019.0.0)      -> the tag's year (2019)
