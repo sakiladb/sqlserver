@@ -461,8 +461,7 @@ GO
 CREATE VIEW sales_by_store
 AS
 SELECT
-  s.store_id
- ,c.city+','+cy.country AS store
+  c.city+','+cy.country AS store
  ,m.first_name+' '+ m.last_name AS manager
  ,SUM(p.amount) AS total_sales
 FROM payment AS p
