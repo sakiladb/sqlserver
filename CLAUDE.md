@@ -5,7 +5,7 @@ Maintainer guide for **`sakiladb/sqlserver`** — a Microsoft SQL Server Docker 
 published to [Docker Hub](https://hub.docker.com/r/sakiladb/sqlserver) and
 [GitHub Container Registry](https://github.com/sakiladb/sqlserver/pkgs/container/sqlserver).
 
-> One of the [`sakiladb`](https://github.com/sakiladb) image family (`postgres`, `mysql`,
+> One of the [`sakiladb`](https://github.com/sakiladb) image family (`postgres`, `mysql`, `mariadb`,
 > `sqlserver`, `oracle`, `clickhouse`, `rqlite`). The release machinery in
 > [How releases work](#how-releases-work) is **shared across the family** (the reference template
 > lives in [`sakiladb/postgres`](https://github.com/sakiladb/postgres)); the build details in
