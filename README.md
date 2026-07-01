@@ -91,8 +91,8 @@ Each SQL Server version is published as its own image tag. `latest` tracks the n
 
 | SQL Server | sakiladb Release | Architecture | Docker Hub                           | GitHub Container Registry                    |
 |-----------:|------------------|--------------|--------------------------------------|----------------------------------------------|
-|       2022 | `v2022.0.3`      | `amd64`      | [`sakiladb/sqlserver:2022`](https://hub.docker.com/r/sakiladb/sqlserver), [`:latest`](https://hub.docker.com/r/sakiladb/sqlserver) | [`ghcr.io/sakiladb/sqlserver:2022`](https://github.com/sakiladb/sqlserver/pkgs/container/sqlserver), [`:latest`](https://github.com/sakiladb/sqlserver/pkgs/container/sqlserver) |
-|       2019 | `v2019.0.5`      | `amd64`      | [`sakiladb/sqlserver:2019`](https://hub.docker.com/r/sakiladb/sqlserver)            | [`ghcr.io/sakiladb/sqlserver:2019`](https://github.com/sakiladb/sqlserver/pkgs/container/sqlserver)            |
+|       2022 | `v2022.0.4`      | `amd64`      | [`sakiladb/sqlserver:2022`](https://hub.docker.com/r/sakiladb/sqlserver), [`:latest`](https://hub.docker.com/r/sakiladb/sqlserver) | [`ghcr.io/sakiladb/sqlserver:2022`](https://github.com/sakiladb/sqlserver/pkgs/container/sqlserver), [`:latest`](https://github.com/sakiladb/sqlserver/pkgs/container/sqlserver) |
+|       2019 | `v2019.0.6`      | `amd64`      | [`sakiladb/sqlserver:2019`](https://hub.docker.com/r/sakiladb/sqlserver)            | [`ghcr.io/sakiladb/sqlserver:2019`](https://github.com/sakiladb/sqlserver/pkgs/container/sqlserver)            |
 
 **sakiladb Release** is the git tag the current image was built from (see
 [releases](https://github.com/sakiladb/sqlserver/releases)). Its version is `v{YEAR}.{MINOR}.{PATCH}`:
@@ -119,7 +119,8 @@ Server version — the version is derived from the tag, so there are no per-vers
 
 ### 2026-06-30
 
-- **Supply-chain attestations** (`v2022.0.3`): published images now carry
+- **Supply-chain attestations** (`v2022.0.4`; the `2019` line republished as `v2019.0.6`;
+  releases now self-verify their attestations): published images now carry
   [SLSA build provenance](https://slsa.dev/) and an SPDX [SBOM](https://spdx.dev/)
   attestation, alongside the existing cosign signature (pushed to Docker Hub and
   GHCR as OCI referrers and to GitHub's attestation store; verify with
