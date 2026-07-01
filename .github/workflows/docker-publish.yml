@@ -233,6 +233,29 @@ jobs:
           predicate-path: sbom.spdx.json
           push-to-registry: true
 
+      # Independently verify what we just pushed (a green attest step means
+      # "uploaded", not "verifiable"). GitHub's store is the hard gate; the
+      # registry referrer (Scout-facing) is retried to absorb post-push lag.
+      - name: Verify attestations
+        if: ${{ env.IS_RELEASE == 'true' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DIGEST: ${{ steps.build-and-push.outputs.digest }}
+        run: |
+          set -euo pipefail
+          SPDX=https://spdx.dev/Document
+          retry() { local n=0; until "$@"; do n=$((n+1)); [ "$n" -ge 5 ] && return 1; echo "not ready (attempt $n), retrying..."; sleep 6; done; }
+          for reg in "$REGISTRY_DOCKERHUB" "$REGISTRY_GHCR"; do
+            ref="oci://$reg/${IMAGE_NAME}@${DIGEST}"
+            echo "::group::verify $ref"
+            gh attestation verify "$ref" --repo "$IMAGE_NAME"
+            gh attestation verify "$ref" --repo "$IMAGE_NAME" --predicate-type "$SPDX"
+            retry gh attestation verify "$ref" --repo "$IMAGE_NAME" --bundle-from-oci
+            retry gh attestation verify "$ref" --repo "$IMAGE_NAME" --bundle-from-oci --predicate-type "$SPDX"
+            echo "::endgroup::"
+          done
+          echo "All attestations verified (provenance + SBOM, store + referrer) on both registries."
+
       # Sync this repo's README to the Docker Hub repository's full description
       # on release (cosmetic; the image is already published above). The curated
       # short description is left untouched (no short-description input).
