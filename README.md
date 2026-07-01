@@ -91,7 +91,7 @@ Each SQL Server version is published as its own image tag. `latest` tracks the n
 
 | SQL Server | sakiladb Release | Architecture | Docker Hub                           | GitHub Container Registry                    |
 |-----------:|------------------|--------------|--------------------------------------|----------------------------------------------|
-|       2022 | `v2022.0.2`      | `amd64`      | [`sakiladb/sqlserver:2022`](https://hub.docker.com/r/sakiladb/sqlserver), [`:latest`](https://hub.docker.com/r/sakiladb/sqlserver) | [`ghcr.io/sakiladb/sqlserver:2022`](https://github.com/sakiladb/sqlserver/pkgs/container/sqlserver), [`:latest`](https://github.com/sakiladb/sqlserver/pkgs/container/sqlserver) |
+|       2022 | `v2022.0.3`      | `amd64`      | [`sakiladb/sqlserver:2022`](https://hub.docker.com/r/sakiladb/sqlserver), [`:latest`](https://hub.docker.com/r/sakiladb/sqlserver) | [`ghcr.io/sakiladb/sqlserver:2022`](https://github.com/sakiladb/sqlserver/pkgs/container/sqlserver), [`:latest`](https://github.com/sakiladb/sqlserver/pkgs/container/sqlserver) |
 |       2019 | `v2019.0.5`      | `amd64`      | [`sakiladb/sqlserver:2019`](https://hub.docker.com/r/sakiladb/sqlserver)            | [`ghcr.io/sakiladb/sqlserver:2019`](https://github.com/sakiladb/sqlserver/pkgs/container/sqlserver)            |
 
 **sakiladb Release** is the git tag the current image was built from (see
@@ -101,7 +101,9 @@ the **year** tracks the SQL Server version, while **minor**/**patch** track saki
 SQL Server base images are **amd64-only**, so these images are `amd64`-only. Every version is published to
 both [Docker Hub](https://hub.docker.com/r/sakiladb/sqlserver) and
 [GitHub Container Registry](https://github.com/sakiladb/sqlserver/pkgs/container/sqlserver), and signed
-with [cosign](https://github.com/sigstore/cosign).
+with [cosign](https://github.com/sigstore/cosign). Each image also carries
+[SLSA build provenance](https://slsa.dev/) and an SPDX [SBOM](https://spdx.dev/) attestation
+(verify with `gh attestation verify`).
 
 > **SQL Server 2017** (`:2017`) is retired: its newest base image is on EOL Ubuntu 18.04, which can no
 > longer install the full-text-search package, so it cannot reach full-text parity with the family. The
@@ -114,6 +116,15 @@ Server version — the version is derived from the tag, so there are no per-vers
 [CLAUDE.md](./CLAUDE.md) for the full, repeatable procedure.
 
 ## Changelog
+
+### 2026-06-30
+
+- **Supply-chain attestations** (`v2022.0.3`): published images now carry
+  [SLSA build provenance](https://slsa.dev/) and an SPDX [SBOM](https://spdx.dev/)
+  attestation, alongside the existing cosign signature (pushed to Docker Hub and
+  GHCR as OCI referrers and to GitHub's attestation store; verify with
+  `gh attestation verify`). The README is also synced to the Docker Hub
+  description on release. The Sakila dataset and schema are unchanged.
 
 ### 2026-06-28
 
